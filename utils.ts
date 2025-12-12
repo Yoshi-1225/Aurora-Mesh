@@ -23,6 +23,12 @@ export const hslToHex = (h: number, s: number, l: number) => {
     return `#${f(0)}${f(8)}${f(4)}`;
 };
 
+export const getAspectRatio = (ratio: string): number => {
+    if (ratio === 'fullscreen') return 0;
+    const [w, h] = ratio.split(':').map(Number);
+    return w / h;
+};
+
 export const createNode = (x: number, y: number, color: string): AuroraNode => {
     const width = Math.random() * 30 + 30;
     const height = Math.random() * 30 + 30;

@@ -5,22 +5,13 @@ import { Slider } from '../Controls/Slider';
 import { ColorInput } from '../Controls/ColorInput';
 import { Icon } from '../Common/Icon';
 import { Select } from '../Controls/Select';
+import { Section } from '../Common/Section';
 
 interface Props {
     settings: AppSettings;
     onUpdate: (updates: Partial<AppSettings>) => void;
     onExport: () => void;
 }
-
-// Internal Helper Component for Cleaner UI Structure
-const SettingSection: React.FC<{ title: string; icon: string; children: React.ReactNode }> = ({ title, icon, children }) => (
-    <div>
-        <h2 className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-3 flex items-center gap-2">
-            <Icon name={icon} className="text-sm" /> {title}
-        </h2>
-        {children}
-    </div>
-);
 
 export const GlobalSettingsPanel: React.FC<Props> = ({ 
     settings, 
@@ -39,7 +30,7 @@ export const GlobalSettingsPanel: React.FC<Props> = ({
             <div className="flex-1 overflow-y-auto p-5 space-y-8">
                 
                 {/* Canvas Settings */}
-                <SettingSection title="畫布設定" icon="aspect_ratio">
+                <Section title="畫布設定" icon="aspect_ratio">
                     <Select 
                         label="長寬比例"
                         value={settings.aspectRatio}
@@ -52,19 +43,19 @@ export const GlobalSettingsPanel: React.FC<Props> = ({
                             { label: '全螢幕 (適應視窗)', value: 'fullscreen' },
                         ]}
                     />
-                </SettingSection>
+                </Section>
 
                 {/* Background */}
-                <SettingSection title="背景設定" icon="format_paint">
+                <Section title="背景設定" icon="format_paint">
                     <ColorInput 
                         label="基礎底色" 
                         value={settings.backgroundColor} 
                         onChange={(c) => onUpdate({ backgroundColor: c })} 
                     />
-                </SettingSection>
+                </Section>
 
                 {/* Noise & Texture */}
-                <SettingSection title="噪點與質感" icon="grain">
+                <Section title="噪點與質感" icon="grain">
                     <Slider 
                         label="強度" 
                         value={Math.round(settings.noiseOpacity * 100)} 
@@ -88,17 +79,17 @@ export const GlobalSettingsPanel: React.FC<Props> = ({
                             { label: '濾色 (Screen)', value: 'screen' },
                         ]}
                     />
-                </SettingSection>
+                </Section>
 
                 {/* Global Effects */}
-                <SettingSection title="全域效果" icon="tune">
+                <Section title="全域效果" icon="tune">
                     <Slider 
                         label="網格模糊" 
                         value={settings.globalBlur} 
                         min={20} max={150} unit="px"
                         onChange={(v) => onUpdate({ globalBlur: v })}
                     />
-                </SettingSection>
+                </Section>
             </div>
 
             {/* Export Footer */}
