@@ -2,7 +2,6 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { AppSettings, AuroraNode, DEFAULT_SETTINGS, RandomizationConfig, HarmonyMode, ShapeType } from '../types';
 import { generateRandomNodes, createNode, hslToHex } from '../utils';
-import { simulateFrame } from '../simulation';
 
 export const useAurora = () => {
     const [settings, setSettings] = useState<AppSettings>(DEFAULT_SETTINGS);
@@ -12,7 +11,6 @@ export const useAurora = () => {
     // Refs for animation loop to access latest state without triggering re-renders
     const nodesRef = useRef<AuroraNode[]>([]);
     const settingsRef = useRef<AppSettings>(DEFAULT_SETTINGS);
-    const animationFrameRef = useRef<number | null>(null);
 
     // Initialize
     useEffect(() => {
@@ -148,27 +146,6 @@ export const useAurora = () => {
             return next;
         });
     }, [settings.harmonyMode]);
-
-    // Animation Loop
-    useEffect(() => {
-        const loop = () => {
-            const currentSettings = settingsRef.current;
-            
-            if (currentSettings.animation) {
-                const speed = currentSettings.speed;
-                const time = Date.now() * 0.001 * speed;
-                
-                simulateFrame(nodesRef.current, currentSettings, time);
-            }
-            
-            animationFrameRef.current = requestAnimationFrame(loop);
-        };
-        
-        loop();
-        return () => {
-            if (animationFrameRef.current) cancelAnimationFrame(animationFrameRef.current);
-        };
-    }, []);
 
     return {
         nodes,
